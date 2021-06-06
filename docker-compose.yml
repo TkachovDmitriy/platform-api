@@ -10,6 +10,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    links:
+      - postgres
     ports:
       - 3000:3000
       - 9229:9229
@@ -17,12 +19,20 @@ services:
     depends_on:
       - postgres
     restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
+
   postgres:
-    container_name: postgres
-    image: postgres:13
-    env_file: .env
+    image: postgres:13.1
     environment:
       PG_DATA: /var/lib/postgresql/data
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    env_file: .env
     ports:
       - 5432:5432
     volumes:
