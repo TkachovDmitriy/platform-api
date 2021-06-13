@@ -1,14 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
-import { swaggerConfig } from './config/swager-config';
 
 import { AppModule } from './app.module';
+import { swaggerConfig } from './config/swagger-config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   app.setGlobalPrefix('/api/v1');
+  SwaggerModule.setup('/api/v1/api-docs', app, document);
 
   SwaggerModule.setup('/api/v1/api-docs', app, document);
 
