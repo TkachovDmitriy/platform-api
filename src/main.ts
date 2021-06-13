@@ -1,14 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule } from '@nestjs/swagger';
+import { swaggerConfig } from './config/swager-config';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   app.setGlobalPrefix('/api/v1');
 
-  await app.listen(PORT);
+  SwaggerModule.setup('/api/v1/api-docs', app, document);
 
-  console.log(`Server start on ${PORT}`);
+  await app.listen(3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
